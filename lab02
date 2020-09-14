@@ -5,7 +5,6 @@
 
 <canvas width="500" , height="500" , id="lab02">
 </canvas>
-<a href="#" , class="button" , id="btn">Save</a>
 <script>
     var canvas = document.getElementById("lab01");
     var ctx = canvas.getContext("2d");
@@ -14,7 +13,8 @@
     var ctx2 = canvas2.getContext("2d");
 
     let img = new Image;
-    img.src = 'C:\\Users\\Admin\\Documents\\Учёба\\myTown.jpg';
+    //img.crossOrigin='Anonymous';
+    img.src = 'https://s1.1zoom.ru/big7/81/Fantastic_world_Sunrises_372402.jpg';
     img.onload = function () {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     }
@@ -22,30 +22,25 @@
     let img_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
     console.log(img_data);
 
-    let midline = canvas2.height / 2;
-    for (let i = 0; i < canvas2.height; ++i) {
-        img_data.data[4 * (midline * canvas2.width + i)] = 0;
-        img_data.data[4 * (midline * canvas2.width + i) + 1] = 0;
-        img_data.data[4 * (midline * canvas2.width + i) + 2] = 0;
-        img_data.data[4 * (midline * canvas2.width + i) + 3] = 255;
+    let newImage = img;
+    //for (let i = 0; i < canvas2.height; ++i) {
+        // img_data.data[4 * (midline * canvas2.width + i)] = 0;
+        // img_data.data[4 * (midline * canvas2.width + i) + 1] = 0;
+        // img_data.data[4 * (midline * canvas2.width + i) + 2] = 0;
+        // img_data.data[4 * (midline * canvas2.width + i) + 3] = 255;
+        for (let i = 0; i < img_data.data.length; i += 4) {
+            midValue = img_data.data[i] + img_data.data[i + 1] + img_data.data[i + 2];
+            midValue /= 3;
+            img_data.data[i] = midValue;
+            img_data.data[i + 1] = midValue;
+            img_data.data[i + 2] = midValue;
+        }
+    //}
 
-    }
-
-    // for (let i = 0; i < canvas.height; ++i)
-    // {
-    //     for(let j = 0; j < canvas.width; ++j){
-    //         img_data.data[4*(canvas2.width+j)] = img_data.data[4*(canvas2.width+j)]
-    //     }
-    // }
-
+    console.log('here');
     ctx2.putImageData(img_data, 0, 0, 0, 0, canvas.width, canvas.height);
+    console.log('hehere');
 
-    let btn = document.getElementById("btn");
-    btn.addEventListener("click", function (e) {
-        let dataURL = canvas2.toDataURL("image/png");
-        btn.href = dataURL;
-        btn.download = "test.png";
-    })
 </script>
 
 </BODY>
